@@ -6,6 +6,8 @@ export const createUserService = async (userPayload:IUser):Promise<IUser>=>{
 
     await user.save();
 
+    // console.log(user.fullName());
+
     return user;
 }
 

@@ -16,6 +16,7 @@ export const createUser = async (req: Request, res: Response) => {
     const userInfo: IUser = req.body;
 
     const user = await createUserService(userInfo);
+    
 
     res.status(201).json({
       success: true,
