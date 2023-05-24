@@ -11,8 +11,9 @@ app.use(cors());
 app.use(express.json());
 app.use(urlencoded({extended:true}));
 
-app.get('/', (req:Request, res:Response) => {
-    // 4 step to work typescript with mongoose
+app.get('/',async (req:Request, res:Response) => {
+    try {
+        // 4 step to work typescript with mongoose
     /**
      * Interface
      * Schema
@@ -45,7 +46,8 @@ app.get('/', (req:Request, res:Response) => {
     const userSchema =new Schema<IUser>({
         id:{
             type:String,
-            required:true
+            required:true,
+            unique:true
         },
         name:{
             firstName:{
@@ -97,6 +99,52 @@ app.get('/', (req:Request, res:Response) => {
             required:true
         }
     })
+
+    const User = model<IUser>("User", userSchema);
+
+    const user = new User({
+        id:"124",
+        name:{
+            firstName:"Mst. Binu",
+            lastName:"Khatun"
+        },
+        role:"student",
+        class:"five",
+        dob:"10/10/2008",
+        gender:"female",
+        password:"binu123",
+        email:"binu@gmail.com",
+        contactNo:"01849676331",
+        emergencyContactNo:"01713749534",
+        presentAddress:"Gobindaganj, Gaibandha",
+        permanentAddress:"Gobindaganj, Gaibandha"
+    })
+
+    try {
+        await user.save();
+
+    res.status(201).json({
+        success:true,
+        message:"Successfully created user",
+        userInfo:{
+            id:user?.id,
+            name:`${user?.name?.firstName} ${user?.name?.lastName}`
+        }
+    })
+    } catch (error) {
+        res.status(401).json({
+            success:false,
+            message:"Couldn't create user",
+            error:error?.message
+        })
+    }
+
+    } catch (error) {
+        res.status(401).json({
+            success:false,
+            message:"Something broken"
+        })
+    }
   })
 
 
