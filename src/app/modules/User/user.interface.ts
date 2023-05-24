@@ -1,3 +1,5 @@
+import { HydratedDocument, Model } from "mongoose";
+
 // interface
 export interface IUser {
   id: string;
@@ -20,3 +22,8 @@ export interface IUser {
 export interface IUserMethods {
   fullName(): string;
 }
+
+
+export interface UserModel extends Model<IUser, {}, IUserMethods> {
+    getAdminUser(): Promise<HydratedDocument<IUser, IUserMethods>>;
+  }

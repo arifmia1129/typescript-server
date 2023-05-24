@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import User from './user.model';
-import { createUserService, getUserByIdService, getUserService } from './user.service';
+import { createUserService, getAdminUserService, getUserByIdService, getUserService } from './user.service';
 import { IUser } from './user.interface';
 
 export const createUser = async (req: Request, res: Response) => {
@@ -42,6 +42,24 @@ export const getUser = async (req:Request, res:Response) => {
                 message:"Could'nt get users"
             })
         }
+
+        res.status(200).json({
+            success:true,
+            message:"Successfully get users", 
+            users
+        })
+    } catch (error) {
+        res.status(401).json({
+            success:false,
+            message:"Something broken"
+        })
+    }
+}
+
+
+export const getAdminUser = async (req:Request, res:Response) => {
+    try {
+        const users = await getAdminUserService();
 
         res.status(200).json({
             success:true,

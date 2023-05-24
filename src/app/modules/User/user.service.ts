@@ -20,3 +20,8 @@ export const getUserByIdService = async (id:string):Promise<IUser | null> => {
     const user = await User.findOne({id}, {name:1, email:1, contactNo:1, emergencyContactNo:1});
     return user;
 }
+
+export const getAdminUserService = async () => {
+    const users = await User.getAdminUser();
+    return users;
+}

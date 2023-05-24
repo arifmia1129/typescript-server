@@ -1,7 +1,7 @@
 import { Model, Schema, model } from "mongoose";
-import { IUser, IUserMethods } from "./user.interface";
+import { IUser, IUserMethods, UserModel } from "./user.interface";
 
-type UserModel = Model<IUser, {}, IUserMethods>;
+// type UserModel = Model<IUser, {}, IUserMethods>;
 
  const userSchema =new Schema<IUser, UserModel, IUserMethods>({
     id:{
@@ -22,7 +22,7 @@ type UserModel = Model<IUser, {}, IUserMethods>;
     role:{
         type:String,
         required:true,
-        enum:["student"]
+        enum:["student", "admin"]
     },
     class:{
         type:String,
@@ -63,6 +63,10 @@ type UserModel = Model<IUser, {}, IUserMethods>;
 userSchema.method("fullName", function fullName():string {
     return this.name.firstName + this.name.lastName;
 })
+
+userSchema.static('getAdminUser',async function getAdminUser():Promise<IUser[]|[]> {
+    return await this.find({role:"admin"});
+});
 
 const User = model<IUser,UserModel>("User", userSchema);
 
